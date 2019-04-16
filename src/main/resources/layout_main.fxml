@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.LineChart?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuItem?>
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0"
+      prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="controller.Controller">
+
+    <MenuBar>
+        <Menu text="Configurar">
+            <MenuItem fx:id="mnuNumberOfFiles" text="Número de Archivos"/>
+            <MenuItem fx:id="mnuQuantityNumbers" text="Cantidad de Aleatorios"/>
+        </Menu>
+    </MenuBar>
+
+    <HBox alignment="CENTER" prefWidth="200.0" spacing="10.0" VBox.vgrow="NEVER">
+
+        <Button fx:id="btnGenerateFiles" mnemonicParsing="false" text="Generar Archivos"/>
+
+        <Button fx:id="btnOrder" mnemonicParsing="false" text="Ordenar Archivos"/>
+
+        <Button fx:id="btnDeleteAll" mnemonicParsing="false" text="Borrar Archivos"/>
+
+        <padding>
+            <Insets top="10.0"/>
+        </padding>
+    </HBox>
+
+    <LineChart fx:id="lineChart" title="Time To Sort" VBox.vgrow="ALWAYS">
+        <xAxis>
+            <NumberAxis side="BOTTOM" label="Cantidad de Numeros"/>
+        </xAxis>
+        <yAxis>
+            <NumberAxis side="LEFT" label="Tiempo"/>
+        </yAxis>
+    </LineChart>
+
+</VBox>
