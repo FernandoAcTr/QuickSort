@@ -25,6 +25,8 @@ public class FileList {
         int increment = numbersPerFile / numberOfFiles;
         int n = increment;
 
+        listFiles.clear();
+
         for (int i = 1; i <= numberOfFiles; i++) {
             numberFile = new NumberFile(NumberFile.DIR_DISORDERED, "archivo" + i + ".txt");
 

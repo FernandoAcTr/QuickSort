@@ -6,9 +6,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.XYChart;
-import javafx.scene.control.Button;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.TextInputDialog;
+import javafx.scene.control.*;
 import model.FileList;
 import model.NumberFile;
 import model.QuickSort;
@@ -30,7 +28,7 @@ public class Controller implements Initializable {
     private Button btnDeleteAll;
 
     @FXML
-    private LineChart<Integer, Integer> lineChart;
+    private LineChart<Integer, Double> lineChart;
 
     @FXML
     private MenuItem mnuNumberOfFiles, mnuQuantityNumbers;
@@ -56,6 +54,11 @@ public class Controller implements Initializable {
         btnGenerateFiles.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
                 generateFiles();
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Terminado");
+                alert.setContentText("Se terminaron de crear los archivos");
+                alert.setHeaderText(null);
+                alert.show();
             }
         });
 
@@ -84,7 +87,7 @@ public class Controller implements Initializable {
 
         btnOrder.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
-                int[] times = orderFiles();
+                double[] times = orderFiles();
                 graphic(times);
             }
         });
@@ -108,10 +111,10 @@ public class Controller implements Initializable {
     }
 
 
-    private int[] orderFiles(){
+    private double[] orderFiles(){
 
         long timeStart, timeEnd;
-        int[] times = new int[fileList.listFiles.size()];
+        double[] times = new double[fileList.listFiles.size()];
         int vector[];
         int pos = 0;
 
@@ -131,22 +134,26 @@ public class Controller implements Initializable {
             orderFile = new NumberFile(NumberFile.DIR_ORDERED, "archivo"+(pos+1));
             orderFile.writeOrderedNums(vector);
 
-            times[pos] = (int)timeEnd/1000000;
+            times[pos] = (double)timeEnd/1000000;
             pos++;
         }
 
         return times;
     }
 
-    private void graphic(int times[]){
+    private void graphic(double times[]){
         int[] filesPerTime = getFilesPerTime(times);
 
-        XYChart.Series<Integer, Integer> serie = new XYChart.Series<Integer, Integer>();
+        XYChart.Series<Integer, Double> serie = new XYChart.Series<Integer, Double>();
 
         for (int i = 0; i < filesPerTime.length; i++)
-            serie.getData().add(new XYChart.Data<Integer, Integer>(filesPerTime[i], times[i]));
+            serie.getData().add(new XYChart.Data<Integer, Double>(filesPerTime[i], times[i]));
 
         lineChart.getData().add(serie);
+
+        for (int i = 0; i < lineChart.getData().size(); i++)
+            for (final XYChart.Data data : lineChart.getData().get(i).getData())
+                Tooltip.install(data.getNode(), new Tooltip("X: " + data.getXValue() + " Y: " + data.getYValue()));
     }
 
     /**
@@ -155,7 +162,7 @@ public class Controller implements Initializable {
      * @param times
      * @return
      */
-    private int[] getFilesPerTime(int times[]){
+    private int[] getFilesPerTime(double times[]){
         int[] nFiles = new int[times.length];
         int increment = numbersPerFile / times.length;
         int n = increment;

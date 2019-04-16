@@ -40,7 +40,7 @@
             <NumberAxis side="BOTTOM" label="Cantidad de Numeros"/>
         </xAxis>
         <yAxis>
-            <NumberAxis side="LEFT" label="Tiempo"/>
+            <NumberAxis side="LEFT" label="Tiempo (milisegundos)"/>
         </yAxis>
     </LineChart>
 

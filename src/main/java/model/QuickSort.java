@@ -7,12 +7,24 @@ public class QuickSort {
 
     }
 
+    /**
+     * Hay varias formas de seleccionar el pivote. Una de ellas es usar siempre el central, otra consiste en seleccionar
+     * siempre el ultimo indice, una muy usada es que sea random.
+     * @param array
+     * @param punteroIzq
+     * @param punteroDer
+     */
     public void sort(int array[], int punteroIzq, int punteroDer){
         int pivote, aux;
         int i = punteroIzq;
         int j = punteroDer;
 
         pivote = array[(punteroIzq+punteroDer)/2];
+
+        //pivote = array[punteroDer];
+
+        //pivote = array[(int)(Math.random() * punteroDer)]; //esta forma produce un StackOverflow a los pocos numeros por ser muchas
+                                                            //llamadas al metodo random
 
         do{
             while (array[i] < pivote)
