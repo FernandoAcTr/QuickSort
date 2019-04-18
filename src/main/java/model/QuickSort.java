@@ -52,5 +52,21 @@ public class QuickSort {
         }
     }
 
+    public void bubble(int ordenado[]){
+        boolean ban = true;
+        int aux;
+        for(int pas = 1;ban; pas++){
+            ban = false;
+
+            for(int com = 1; com < (ordenado.length-pas); com++)
+
+                if(ordenado[com-1] > ordenado[com]){
+                    ban = true;
+                    aux = ordenado[com-1];
+                    ordenado[com-1] = ordenado[com];
+                    ordenado[com] = aux;
+                }
+        }
+    }
 
 }

@@ -13,6 +13,8 @@ import model.QuickSort;
 
 import java.io.File;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -31,12 +33,16 @@ public class Controller implements Initializable {
     private LineChart<Integer, Double> lineChart;
 
     @FXML
-    private MenuItem mnuNumberOfFiles, mnuQuantityNumbers;
+    private MenuItem mnuNumberOfFiles, mnuQuantityNumbers, mnuTypeSort;
 
     FileList fileList;
     QuickSort quickSort;
     int numberOfFiles;
     int numbersPerFile;
+    String sortType;
+
+    public static final String BUBBLESORT = "BubbleSort";
+    public static final String QUICKSORT = "QuickSort";
 
     public void initialize(URL location, ResourceBundle resources) {
         initData();
@@ -44,8 +50,9 @@ public class Controller implements Initializable {
     }
 
     private void initData() {
-        numberOfFiles = 100;
-        numbersPerFile = 1000;
+        sortType = QUICKSORT;
+        numberOfFiles = 10;
+        numbersPerFile = 10000;
         quickSort = new QuickSort();
         fileList = new FileList(numberOfFiles);
     }
@@ -91,6 +98,12 @@ public class Controller implements Initializable {
                 graphic(times);
             }
         });
+
+        mnuTypeSort.setOnAction(new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent event) {
+                showChoiceDialog();
+            }
+        });
     }
 
     private void generateFiles() {
@@ -113,7 +126,7 @@ public class Controller implements Initializable {
 
     private double[] orderFiles(){
 
-        long timeStart, timeEnd;
+        long timeStart = 0, timeEnd  = 0;
         double[] times = new double[fileList.listFiles.size()];
         int vector[];
         int pos = 0;
@@ -125,10 +138,17 @@ public class Controller implements Initializable {
             //recuperar los numeros del archivo
             vector = NumberFile.getNumsOfFile(file);
 
-            //ordenar el vector con quicksort
-            timeStart = System.nanoTime();
-            quickSort.sort(vector, 0, vector.length-1);
-            timeEnd = System.nanoTime() - timeStart;
+            //ordenar el vector con el metodo en turno
+
+            if(sortType.equals(QUICKSORT)){
+                timeStart = System.nanoTime();
+                quickSort.sort(vector, 0, vector.length-1);
+                timeEnd = System.nanoTime() - timeStart;
+            }else if(sortType.equals(BUBBLESORT)){
+                timeStart = System.nanoTime();
+                quickSort.bubble(vector);
+                timeEnd = System.nanoTime() - timeStart;
+            }
 
             //escribir los numeros ordenados en un archivo nuevo
             orderFile = new NumberFile(NumberFile.DIR_ORDERED, "archivo"+(pos+1));
@@ -145,6 +165,7 @@ public class Controller implements Initializable {
         int[] filesPerTime = getFilesPerTime(times);
 
         XYChart.Series<Integer, Double> serie = new XYChart.Series<Integer, Double>();
+        serie.setName(sortType + "-" + numbersPerFile);
 
         for (int i = 0; i < filesPerTime.length; i++)
             serie.getData().add(new XYChart.Data<Integer, Double>(filesPerTime[i], times[i]));
@@ -173,5 +194,20 @@ public class Controller implements Initializable {
         }
 
         return nFiles;
+    }
+
+    private void showChoiceDialog(){
+        List<String> choices = new ArrayList<String>();
+        choices.add(QUICKSORT);
+        choices.add(BUBBLESORT);
+
+        ChoiceDialog<String> dialog = new ChoiceDialog(sortType, choices);
+        dialog.setTitle("Metodo de Ordenamiento");
+        dialog.setContentText("Metodo :");
+
+        Optional<String> result = dialog.showAndWait();
+        if(result.isPresent())
+                sortType = result.get();
+
     }
 }

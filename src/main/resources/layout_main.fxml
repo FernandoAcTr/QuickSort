@@ -19,6 +19,7 @@
         <Menu text="Configurar">
             <MenuItem fx:id="mnuNumberOfFiles" text="Número de Archivos"/>
             <MenuItem fx:id="mnuQuantityNumbers" text="Cantidad de Aleatorios"/>
+            <MenuItem fx:id="mnuTypeSort" text="Tipo de ordenamiento"/>
         </Menu>
     </MenuBar>
 
